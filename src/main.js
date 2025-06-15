@@ -29,9 +29,9 @@ function handleSubmit(event) {
     .then(data => {
       hideLoader();
       if (data.hits.length === 0) {
-        iziToast.warning({
+        iziToast.error({
           message:
-            'Sorry, no images matching your search query were found.Please try again.',
+            'Sorry, there are no images matching your search query. Please try again!',
           position: 'topRight',
         });
         return;
@@ -39,11 +39,13 @@ function handleSubmit(event) {
       createGallery(data.hits);
     })
     .catch(error => {
-      showLoader();
-      iziToast.warning({
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
+      hideLoader();
+      iziToast.error({
+        message: 'Something went wrong.Please try again.',
         position: 'topRight',
       });
+    })
+    .finally(() => {
+      input.value = '';
     });
 }
